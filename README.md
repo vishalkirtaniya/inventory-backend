@@ -28,8 +28,8 @@ Make sure you have these installed:
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/your-username/inventory-api.git
-cd inventory-api
+git clone https://github.com/vishalkirtaniya/inventory-backend.git
+cd inventory-backend
 ```
 
 ### 2. Install dependencies
@@ -40,10 +40,23 @@ npm install
 
 ### 3. Set up PostgreSQL
 
-Start PostgreSQL and open the psql shell:
+Follow the instructions for your operating system:
+
+---
+
+#### Linux (Fedora/RHEL)
+
+Install and start PostgreSQL:
 
 ```bash
-sudo systemctl start postgresql
+sudo dnf install postgresql postgresql-server
+sudo postgresql-setup --initdb
+sudo systemctl enable --now postgresql
+```
+
+Open the psql shell:
+
+```bash
 sudo -u postgres psql
 ```
 
@@ -73,6 +86,80 @@ Restart PostgreSQL:
 ```bash
 sudo systemctl restart postgresql
 ```
+
+---
+
+#### Linux (Ubuntu/Debian)
+
+Install and start PostgreSQL:
+
+```bash
+sudo apt install postgresql postgresql-contrib
+sudo systemctl enable --now postgresql
+```
+
+Open the psql shell:
+
+```bash
+sudo -u postgres psql
+```
+
+Create the database and user:
+
+```sql
+CREATE USER inventory_user WITH PASSWORD 'yourpassword';
+CREATE DATABASE inventory_db OWNER inventory_user;
+\q
+```
+
+`pg_hba.conf` changes are usually not needed on Ubuntu — password auth works by default.
+
+---
+
+#### Mac
+
+Install PostgreSQL using Homebrew:
+
+```bash
+brew install postgresql@16
+brew services start postgresql@16
+```
+
+Open the psql shell:
+
+```bash
+psql postgres
+```
+
+Create the database and user:
+
+```sql
+CREATE USER inventory_user WITH PASSWORD 'yourpassword';
+CREATE DATABASE inventory_db OWNER inventory_user;
+\q
+```
+
+No `pg_hba.conf` changes needed — Homebrew sets up password auth by default.
+
+---
+
+#### Windows
+
+1. Download the PostgreSQL installer from **postgresql.org/download/windows**
+2. Run the installer and follow the setup wizard
+3. Note the password you set for the `postgres` user during installation
+4. Once installed, open **SQL Shell (psql)** from the Start menu
+
+In the psql shell (press Enter to accept defaults, enter your postgres password when prompted):
+
+```sql
+CREATE USER inventory_user WITH PASSWORD 'yourpassword';
+CREATE DATABASE inventory_db OWNER inventory_user;
+\q
+```
+
+
+---
 
 ### 4. Create the `.env` file
 
